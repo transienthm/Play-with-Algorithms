@@ -9,26 +9,6 @@ public class MaxHeap<Item extends Comparable, T> {
 	private int capacity;
 	private Class<T> type;
 
-	public Item get(int i) {
-		if (i < 0 || i >= data.length - 1) {
-			return null;
-		}
-		Item res = data[i + 1];
-		return res;	
-	}
-
-	public static void main(String[] args) {
-		MaxHeap<Integer, Integer> maxHeap = new MaxHeap<>(1, Integer.class);
-		int n = 16;
-		long seed = System.nanoTime();
-		Random random = new Random(seed);
-
-		for (int i = 0; i < n; i++) {
-			maxHeap.insert(Math.abs(random.nextInt() % 10));
-		}
-		maxHeap.treePrint();
-	}
-
 	public MaxHeap(int capacity, Class<T> type) {
 		//泛型数组的经典处理方式 
 		this.data = (Item[]) Array.newInstance(type, capacity + 1);//索引0不存储数据
@@ -45,34 +25,48 @@ public class MaxHeap<Item extends Comparable, T> {
 		return count == 0;
 	}
 
- 	public void insert(Item item) {
- 		if (count + 1 > this.capacity) {
- 			this.capacity = this.capacity * 2 + 1;
- 			Item[] newData = (Item[]) Array.newInstance(this.type, capacity + 1);
- 			System.arraycopy(this.data, 0, newData, 0, count + 1);
- 			data = newData;
- 		}
- 		data[count + 1] = item; 
- 		count++;
- 		shiftUp(count);
- 	}
+	public void insert(Item item) {
+		//首先要保证数组不越界
+		if (this.count + 1 >= this.capacity) {
+			this.capacity = this.capacity * 2 + 1;
+			Item[] newData = (Item[]) Array.newInstance(type, capacity);
+			System.arraycopy(data, 0, newData, 0, count + 1);
+			data = newData;
+		}
 
- 	private void shiftUp(int k) {
- 		while (k > 1 && data[k / 2].compareTo(data[k]) < 0) { // 父节点小于子节点，则需要一直循环
- 			swap(data, k / 2, k);
- 			k = k / 2;
- 		}
- 	}
+		data[++count] = item;
+		shiftUp(count);
+	}
 
- 	public void swap(Item[] arr, int i, int j) {
- 		Item t = arr[i];
- 		arr[i] = arr[j];
- 		arr[j] = t;
- 	}
+	private void shiftUp(int k) {
+		while (k > 1 && data[k / 2].compareTo(data[k]) < 0) {
+			swap(data, k / 2, k);
+			k /= 2;
+		}
+	}
+
+	private void swap(Item[] arr, int i, int j) {
+		Item t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
+	}
 
 
+	public static void main(String[] args) {
+		MaxHeap<Integer, Integer> maxHeap = new MaxHeap<>(1, Integer.class);
+		int n = 16;
+		long seed = System.nanoTime();
+		Random random = new Random(seed);
 
+		for (int i = 0; i < n; i++) {
+			maxHeap.insert(Math.abs(random.nextInt() % 10));
+		}
+		maxHeap.treePrint();
+	}
 
+	/**
+	* 打印树相关算法
+	*/
  	public void treePrint(){
 
         if( size() >= 100 ){

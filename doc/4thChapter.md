@@ -26,14 +26,19 @@ right child (i) = 2 * i + 1
 ```
 package com.meituan.sort;
 
-public class MaxHeap<Item> {
+import java.lang.reflect.Array;
+
+public class MaxHeap<Item, T> {
 	private Item[] data;
 	private int count;
+	private Class<T> type;
 
-	public MaxHeap(int capacity) {
+	public MaxHeap(int capacity, Class<T> type) {
 		//泛型数组的经典处理方式 
-		data = (Item[]) new Object[capacity + 1];//索引0不存储数据
-		count = 0;
+		this.data = (Item[]) Array.newInstance(type, capacity + 1);//索引0不存储数据
+		this.count = 0;
+		this.capacity = capacity;
+		this.type = type;	
 	}
 
 	public int size() {
@@ -51,4 +56,74 @@ public class MaxHeap<Item> {
 }
 ```
 
+总结：
+创建泛型数组：参考https://segmentfault.com/a/1190000005179147
+
 #### Shift Up操作
+向最大堆中存入数据，需要调整数据到正确的位置，从而保证该堆依旧是最大堆，因此需要shiftUp操作。
+```
+package com.meituan.sort;
+
+import java.lang.reflect.Array;
+
+public class MaxHeap<Item extends Comparable, T> {
+	private Item[] data;
+	private int count;
+	private Class<T> type;
+	private int capacity;
+
+	public MaxHeap(int capacity, Class<T> type) {
+		//泛型数组的经典处理方式 
+		this.data = (Item[]) Array.newInstance(type, capacity + 1);//索引0不存储数据
+		this.count = 0;
+		this.capacity = capacity;
+		this.type = type;	
+	}
+
+	public int size() {
+		return count;
+	}
+
+	public boolean isEmpty() {
+		return count == 0;
+	}
+
+	public void insert(Item item) {
+		//首先要保证数组不越界
+		if (this.count + 1 >= this.capacity) {
+			this.capacity = this.capacity * 2 + 1;
+			Item[] newData = (Item[]) Array.newInstance(type, capacity);
+			System.arraycopy(data, 0, newData, 0, count + 1);
+			data = newData;
+		}
+
+		data[++count] = item;
+		shiftUp(count);
+	}
+
+	private void shiftUp(int k) {
+		while (k > 1 && data[k / 2].compareTo(data[k]) < 0) {
+			swap(data, k / 2, k);
+			k /= 2;
+		}
+	}
+
+	private void swap(Item[] arr, int i, int j) {
+		Item t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
+	}
+
+	public static void main(String[] args) {
+		MaxHeap<Integer> maxHeap = new MaxHeap(100);
+		System.out.println(maxHeap.size());
+	}
+}
+```
+
+总结：
+1. 数组扩容机制
+	```
+	补充ArrayList实现
+	```
+2. while循环中，k > 1边界条件的发现
