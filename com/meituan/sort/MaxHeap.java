@@ -3,13 +3,13 @@ package com.meituan.sort;
 import java.util.Random;
 import java.lang.reflect.Array;
 
-public class MaxHeap<Item extends Comparable, T> {
+public class MaxHeap<Item extends Comparable> {
 	private Item[] data;
 	private int count;
 	private int capacity;
-	private Class<T> type;
+	private Class<Item> type;
 
-	public MaxHeap(int capacity, Class<T> type) {
+	public MaxHeap(int capacity, Class<Item> type) {
 		//泛型数组的经典处理方式 
 		this.data = (Item[]) Array.newInstance(type, capacity + 1);//索引0不存储数据
 		this.count = 0;
@@ -38,10 +38,34 @@ public class MaxHeap<Item extends Comparable, T> {
 		shiftUp(count);
 	}
 
+	public Item extractMax() {
+		if (count <= 0) {
+			return null;
+		}
+
+		Item res = data[1];
+		swap(data, 1, count--);
+		shiftDown(1);
+
+		return res;
+	}
+
 	private void shiftUp(int k) {
 		while (k > 1 && data[k / 2].compareTo(data[k]) < 0) {
 			swap(data, k / 2, k);
 			k /= 2;
+		}
+	}
+
+	private void shiftDown(int k) {
+		while (k <= (count - 1) / 2 && data[k].compareTo(max(data[k * 2], data[k * 2 + 1])) < 0) {
+			if (data[k * 2].compareTo(data[k * 2 + 1]) > 0) {
+				swap(data, k, k * 2);
+				k = k * 2;
+			} else {
+				swap(data, k, k * 2 + 1);
+				k = k * 2 + 1;
+			}
 		}
 	}
 
@@ -51,9 +75,24 @@ public class MaxHeap<Item extends Comparable, T> {
 		arr[j] = t;
 	}
 
+	private Item max(Item a, Item b) {
+		if (a == null) {
+			return b;
+		}
+
+		if (b == null) {
+			return a;
+		}
+
+		if (a.compareTo(b) > 0) {
+			return a;
+		} else {
+			return b;
+		}
+	}
 
 	public static void main(String[] args) {
-		MaxHeap<Integer, Integer> maxHeap = new MaxHeap<>(1, Integer.class);
+		MaxHeap<Integer> maxHeap = new MaxHeap<>(1, Integer.class);
 		int n = 16;
 		long seed = System.nanoTime();
 		Random random = new Random(seed);
@@ -62,6 +101,10 @@ public class MaxHeap<Item extends Comparable, T> {
 			maxHeap.insert(Math.abs(random.nextInt() % 10));
 		}
 		maxHeap.treePrint();
+		System.out.println("extractMax()操作开始执行：");
+		while (!maxHeap.isEmpty()) {
+			System.out.print(maxHeap.extractMax() + " ");
+		}
 	}
 
 	/**
