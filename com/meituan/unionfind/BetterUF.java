@@ -42,6 +42,5 @@ public class BetterUF {
 			parent[qRoot] = pRoot;
 			size[pRoot] += size[qRoot];
 		}
-
 	}
 }
