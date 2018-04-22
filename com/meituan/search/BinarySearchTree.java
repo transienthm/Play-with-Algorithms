@@ -1,14 +1,14 @@
 package com.meituan.search;
 
 
-public class BinarySearchTree {
+public class BinarySearchTree<K extends Comparable<K>, V> {
 	private Node root;
 	int count;
 
 	/**
 	* Node设计为内部类，所有返回Node的方法都为private，对外界来说，不需要感知到Node的存在
 	*/
-	class Node<K, V> {
+	class Node {
 		K key;
 		V value;
 		Node left;
@@ -43,9 +43,9 @@ public class BinarySearchTree {
 			return new Node(key, value);
 		}
 
-		if (key == node.key) {
+		if (key.compareTo(node.key) == 0) {
 			node.value = value;
-		} else if (key < node.key) {
+		} else if (key.compareTo(node.key) < 0) {
 			node.left = insert(node.left, key, value);
 		} else {
 			node.right = insert(node.right, key, value);
@@ -63,9 +63,9 @@ public class BinarySearchTree {
 			return false;
 		}
 
-		if (key == node.key) {
+		if (key == root.key) {
 			return true;
-		} else if (key < root.key) {
+		} else if (key.compareTo(root.key) < 0) {
 			return contain(root.left, key);
 		} else {
 			return contain(root.right, key);
@@ -88,8 +88,8 @@ public class BinarySearchTree {
 
 		if (key == root.key) {
 			return root.value;
-		} else if (key < root.key) {
-			return search(root.left, key)
+		} else if (key.compareTo(root.key) < 0) {
+			return search(root.left, key);
 		} else {
 			return search(root.right, key);
 		}
