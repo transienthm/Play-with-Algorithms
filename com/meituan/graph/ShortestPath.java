@@ -3,6 +3,8 @@ package com.meituan.graph;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 //最短路径算法
 public class ShortestPath {
@@ -30,15 +32,15 @@ public class ShortestPath {
 		this.s = s;
 		Queue<Integer> queue = new LinkedList<>();
 
-		queue.push(s);
+		queue.offer(s);
 		visited[s] = true;
 		order[s] = 0;
 
 		while(!queue.isEmpty()) {
-			int v = queue.pop();
-			for (int i : g.adj(v) {
+			int v = queue.poll();
+			for (int i : g.adj(v)) {
 				if (!visited[i]) {		
-					q.push(i);
+					queue.offer(i);
 					visited[i] = true;
 					from[i] = v;
 					order[i] = order[v] + 1;
@@ -59,11 +61,11 @@ public class ShortestPath {
 
 	//查询s到w的路径
 	public List<Integer> path(int w) {
-		if (!hasPath(w)) {
-			return null;
-		}
-
 		List<Integer> res = new ArrayList<>();
+
+		if (!hasPath(w)) {
+			return res;
+		}
 
 		Stack<Integer> s = new Stack<>();
 		int p = w;
@@ -79,5 +81,5 @@ public class ShortestPath {
 
 		return res;
 	}
-
 }
+
