@@ -36,7 +36,7 @@ public class MinHeap<T extends Comparable> {
 	}
 
 	private void shiftUp(int i) {
-		while (data[i].comapreTo(data[i / 2]) < 0 && i > 1) {
+		while (data[i].compareTo(data[i / 2]) < 0 && i > 1) {
 			swap(data, i, i / 2);
 			i /= 2;
 		}

@@ -11,6 +11,10 @@ public class Edge<Weight extends Number & Comparable> implements Comparable<Edge
 		this.weight = weight;
 	}
 
+	public Edge() {
+
+	}
+	
 	public Edge(Edge<Weight> e) {
 		this.a = e.a;
 		this.b = e.b;
