@@ -15,7 +15,7 @@ public class SparseWeightedGraph<Weight extends Number & Comparable> implements 
 		}
 		this.n = n;
 		this.directed = directed;
-		this.g = (ArrayList<Edge<Weight>>)new ArrayList[n];
+		this.g = (ArrayList<Edge<Weight>>[])new ArrayList[n];
 
 		for (int i = 0; i < n; i++) {
 			g[i] = new ArrayList<Edge<Weight>>();
@@ -38,7 +38,7 @@ public class SparseWeightedGraph<Weight extends Number & Comparable> implements 
 			return false;
 		}
 
-		for (Edge e : g.adj(v)) {
+		for (Edge e : adj(v)) {
 			if (e.other(v) == w) {
 				return true;
 			}
