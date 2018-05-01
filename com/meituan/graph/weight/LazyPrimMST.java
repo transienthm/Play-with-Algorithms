@@ -15,6 +15,9 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
 		marked = new boolean[n];
 		mst = new ArrayList<>();
 
-		
+		visit(0);
+		while (!minHeap.isEmpty()) {
+			
+		}
 	} 
 }
