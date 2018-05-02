@@ -23,6 +23,7 @@ public class QuickFind {
 		return find(p) == find(q);
 	}
 
+	//在某个情形下将两者相结合
 	public void union(int p, int q) {
 		int pId = find(p);
 		int qId = find(q);

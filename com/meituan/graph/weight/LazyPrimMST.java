@@ -39,7 +39,7 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
 			//计算最小生成树的权值
 			mstWeight = mst.get(0).wt();
 			for (int i = 1; i < mst.size(); i++) {
-				mstWeight += mst.get(i).wt();
+				mstWeight = mstWeight.doubleValue() + mst.get(i).wt().doubleValue();
 			}
 		}
 	} 

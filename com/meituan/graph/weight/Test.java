@@ -1,13 +1,17 @@
 package com.meituan.graph.weight;
 
-public class Test {
-	public static void main(String[] args) {
-		int[] arr = new int[10];
-		int count = 0;
+import java.util.List;
+import java.util.ArrayList;
 
-		arr[count++] = 1;
-		for (int i = 0; i < 10; i++) {
-			System.out.print(arr[i] + " ");
+public class Test {
+
+	public Test(TestInterface2 ti) {
+		for (Edge e : ti.adj()) {
+			System.out.print(e + " ");
 		}
 	}
 }
+
+interface TestInterface2 {
+	public Iterable<Edge> adj();
+} 

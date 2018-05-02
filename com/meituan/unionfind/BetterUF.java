@@ -5,7 +5,7 @@ public class BetterUF {
 	private int count;
 	private int[] size;
 
-	public QuickUnion(int count) {
+	public BetterUF(int count) {
 		parent = new int[count];
 		size = new int[count];
 		this.count = count;
